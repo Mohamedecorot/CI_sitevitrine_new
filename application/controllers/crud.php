@@ -7,8 +7,19 @@ class Crud extends CI_Controller {
 	{
 		$data['title'] = "Liste des produits";
 		$data['mydata'] = $this->mcrud->view();
+
 		$this->load->view('header', $data);
-		$this->load->view('data', $data);
+		$this->load->view('afficher_produit', $data);
+		$this->load->view('footer');
+	}
+
+	public function data()
+	{
+		$data['title'] = "Listes des produits";
+		$data['mydata'] = $this->mcrud->view();
+
+		$this->load->view('header', $data);
+		$this->load->view('admin/data');
 		$this->load->view('footer');
 	}
 
@@ -16,7 +27,7 @@ class Crud extends CI_Controller {
 	{
 		$data['title'] = "Ajouter un produit";
 		$this->load->view('header', $data);
-		$this->load->view('add');
+		$this->load->view('admin/add');
 		$this->load->view('footer');
 	}
 
@@ -44,7 +55,7 @@ class Crud extends CI_Controller {
 
 		$data['title'] = "Modifier un produit";
 		$this->load->view('header', $data);
-		$this->load->view('edit', $data);
+		$this->load->view('admin/edit', $data);
 		$this->load->view('footer');
 	}
 

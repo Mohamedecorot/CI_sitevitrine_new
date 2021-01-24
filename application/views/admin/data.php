@@ -1,5 +1,10 @@
+<?php if($this->session->userdata('username') != ''): ?>
+    <?php
+        echo '<h2>Bienvenue '.$this->session->userdata('username').'</h2>';
+    ?>
+
     <p>
-        <a href="<?php echo site_url('crud/add') ?>" class="btn btn-primary">Ajouter un nouveau produit</a>
+        <a href="<?php echo site_url('crud/add') ?>" class="btn btn-dark">Ajouter un nouveau produit</a>
     </p>
         <table class="table table-bordered table-striped">
             <thead>
@@ -41,3 +46,8 @@
                 ?>
             </tbody>
         </table>
+
+<?php else: ?>
+    <div class="alert alert-danger">Vous n'avez pas accès à cette page</div>
+    <?php redirect(base_url() . 'main/login'); ?>
+<?php endif ?>
