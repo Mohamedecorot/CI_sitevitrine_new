@@ -8,12 +8,12 @@
 		<?php foreach($mydata as $produit): ?>
 			<div class="col-12 col-lg-4">
 				<div class="card mb-4 mb-lg-0">
-					<img src="#" alt="<?php echo $produit->illustration; ?>" class="card-img-top">
+					<a href="<?=base_url().'uploads/'.$produit->illustration;?>" target="_blank"><img src="<?=base_url().'uploads/'.$produit->illustration;?>" alt="" class="card-img-top" width="auto" height="250"></a>
 					<div class="card-body">
-						<h4 class="card-title"><?php echo htmlentities($produit->nom); ?></h4>
-						<h6 class="card-text">Catégorie : <?php echo $produit->categorie; ?></h6>
-						<p class="card-text"><?php echo $produit->description; ?></p>
-						<p class="card-text">Prix : <?php echo $produit->prix; ?> €</p>
+						<h4 class="card-title"><?= htmlentities($produit->nom); ?></h4>
+						<h6 class="card-text">Catégorie : <?= $produit->categorie; ?></h6>
+						<p class="card-text"><?= $produit->description; ?></p>
+						<p class="card-text">Prix : <?= $produit->prix; ?> €</p>
 					</div>
 				</div>
 			</div>

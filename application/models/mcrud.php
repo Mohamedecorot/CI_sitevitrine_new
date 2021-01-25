@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Mcrud extends CI_Model {
 
+
 	function view()
 	{
         $importer = $this->db->get('listeproduits');
@@ -14,20 +15,13 @@ class Mcrud extends CI_Model {
         }
     }
 
-    function add(){
-        $nom = $this->input->post('nom');
-        $description = $this->input->post('description');
-        $categorie = $this->input->post('categorie');
-        $illustration = $this->input->post('illustration');
-        $prix = $this->input->post('prix');
-        $data = array(
-            'nom' => $nom,
-            'description' => $description,
-            'categorie' => $categorie,
-            'illustration' => $illustration,
-            'prix' => $prix
-        );
-        $this->db->insert('listeproduits', $data);
+    function add($data){
+        $insert_data['nom'] = $data['nom'];
+        $insert_data['description'] = $data['description'];
+        $insert_data['categorie'] = $data['categorie'];
+        $insert_data['illustration'] = $data['illustration'];
+        $insert_data['prix'] = $data['prix'];
+        $this->db->insert('listeproduits', $insert_data);
     }
 
     function edit($id){
