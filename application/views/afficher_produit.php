@@ -2,9 +2,14 @@
 	<div class="row my-3">
 		<div class="col">
 			<h1>Listes des produits</h1>
+			<?php echo form_label('Trier par  ', 'tri'); ?>
+			<select style="width: 122px;" name="tri" onchange="this.form.submit();">
+				<option value="category">Catégorie</option>
+				<option value="price">Prix</option>
+			</select>
 		</div>
-		</div>
-		<div class="row">
+	</div>
+	<div class="row">
 		<?php foreach($mydata as $produit): ?>
 			<div class="col-12 col-lg-4">
 				<div class="card mb-4 mb-lg-0">

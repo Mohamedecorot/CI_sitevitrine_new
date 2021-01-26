@@ -3,11 +3,12 @@ $config = array(
     array(
         'field' => 'nom',
         'label' => 'nom',
-        'rules' => 'required|min_length[3]|max_length[50]',
+        'rules' => 'required|min_length[3]|max_length[50]|alpha',
         'errors' => array(
             'required'  => 'Merci de rentrer le %s du produit',
             'min_length' => 'Le %s doit avoir au moins 3 lettres',
             'max_length' => 'Le %s doit avoir au maximum 50 lettres',
+            'alpha' => 'Le %s ne doit comporter que des lettres',
         ),
     ),
     array(
@@ -23,11 +24,12 @@ $config = array(
     array(
         'field' => 'categorie',
         'label' => 'categorie',
-        'rules' => 'required|min_length[3]|max_length[50]',
+        'rules' => 'required|min_length[3]|max_length[50]|alpha',
         'errors' => array(
             'required'  => 'Merci de rentrer la %s du produit',
             'min_length' => 'La %s doit avoir au moins 3 lettres',
             'max_length' => 'La %s doit avoir au maximum 50 lettres',
+            'alpha' => 'La %s ne doit comporter que des lettres',
         ),
     ),
     array(
