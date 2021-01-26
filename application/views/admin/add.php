@@ -29,7 +29,7 @@ echo form_open_multipart('crud/save', 'class="myform"');
 </div>
 
 <div class="form-group">
-    <?php echo form_label('Selectionnez une image du produit', 'illustration'); ?>
+    <?php echo form_label('Selectionnez une image du produit (gif, jpg, png, jpeg)', 'illustration'); ?>
     <input type="file" name="illustration" class="form-control"  id="illustration"/>
     <?php //echo form_error('illustration', '<p class="error">', '</p>'); ?>
     <?php if (isset($error)) { echo '<div class="error">' . $error . '</div>'; } ?>

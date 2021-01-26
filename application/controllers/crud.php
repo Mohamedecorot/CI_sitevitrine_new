@@ -53,12 +53,17 @@ class Crud extends CI_Controller {
 				'overwrite' => TRUE,
 				'max_size' => "2048000"
 				);
+			$this->form_validation->set_message('allowed_types', 'Veuillez uploader un fichier au bon format gif, jpg, png, jpeg');
+
             $this->load->library('upload', $config);
             if ( ! $this->upload->do_upload('illustration')){
-				$error = array('error' => $this->upload->display_errors());
+				//$error = array('error' => $this->upload->display_errors('', ''));
+				$error = $this->upload->display_errors('', '');
+                $data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
+
 				$this->load->view('header', $data);
-				$this->load->view('admin/add', $error);
+				$this->load->view('admin/add', $data);
 				$this->load->view('footer');
             } else {
                 //file is uploaded successfully
