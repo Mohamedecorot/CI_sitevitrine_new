@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Crud extends CI_Controller {
 
 	public function __construct() {
-        parent::__construct();
+		parent::__construct();
     }
 
 	public function index()
@@ -36,12 +36,12 @@ class Crud extends CI_Controller {
 	}
 
 	public function save(){
-        //validate the form data
-        //$this->form_validation->set_rules('pic_title', 'Picture Title', 'required');
-        //if ($this->form_validation->run() == FALSE){
-			//$this->load->view('upload_form');
-		//	redirect('crud/add', 'refresh');
-        //}else{
+        if ($this->form_validation->run() == FALSE){
+			$data['title'] = "Erreur: rajouter le produit";
+			$this->load->view('header', $data);
+			$this->load->view('admin/add');
+			$this->load->view('footer');
+        } else {
             $data['nom'] = $this->input->post('nom', TRUE);
             $data['description'] = $this->input->post('description', TRUE);
             $data['categorie'] = $this->input->post('categorie', TRUE);
@@ -55,9 +55,12 @@ class Crud extends CI_Controller {
 				);
             $this->load->library('upload', $config);
             if ( ! $this->upload->do_upload('illustration')){
-                $error = array('error' => $this->upload->display_errors());
-                $this->load->view('admin/add', $error);
-            }else{
+				$error = array('error' => $this->upload->display_errors());
+				$data['title'] = "Erreur sur le fichier";
+				$this->load->view('header', $data);
+				$this->load->view('admin/add', $error);
+				$this->load->view('footer');
+            } else {
                 //file is uploaded successfully
                 //now get the file uploaded data
                 $upload_data = $this->upload->data();
@@ -68,7 +71,7 @@ class Crud extends CI_Controller {
                 redirect('crud', 'refresh');
             }
             $this->load->view('footer');
-        //}
+        }
     }
 
 	public function choisir() {
