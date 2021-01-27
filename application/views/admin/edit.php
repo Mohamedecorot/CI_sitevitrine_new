@@ -1,7 +1,7 @@
 <?php if($this->session->userdata('username') != ''): ?>
 
 <?php
-echo form_open_multipart('crud/save', 'class="myform"');
+echo form_open_multipart('crud/update', 'class="myform"');
 ?>
 
 <div class="form-group">
@@ -41,7 +41,7 @@ echo form_open_multipart('crud/save', 'class="myform"');
 
 <input type="submit" name="edit" class="btn btn-primary" value="Update">
 
-<a href="<?php echo site_url('crud') ?>" class="btn btn-link">Retour en arrière</a>
+<a href="<?php echo site_url('crud/data') ?>" class="btn btn-link">Retour en arrière</a>
 
 <?php
 echo form_close();

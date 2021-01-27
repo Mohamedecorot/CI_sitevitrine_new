@@ -7,24 +7,21 @@ class Crud extends CI_Controller {
 		parent::__construct();
     }
 
-	public function index($sort_by = '', $sort_order = '')
+	public function index($sort_by = 'id', $sort_order = 'asc')
 	{
 		// Vérification du choix du visiteur pour le tri des produits
-		if ($this->input->post('post-order-by') == 'categorie_desc') {
-			$sort_by = 'categorie';
-			$sort_order = 'DESC';
-		} elseif ($this->input->post('post-order-by') == 'categorie_asc'){
-			$sort_by = 'categorie';
-			$sort_order = 'ASC';
-		} elseif ($this->input->post('post-order-by') == 'prix_desc') {
+		if ($this->input->post('post-order-by') == 'prix_desc') {
 			$sort_by = 'prix';
 			$sort_order = 'DESC';
 		} elseif ($this->input->post('post-order-by') == 'prix_asc') {
 			$sort_by = 'prix';
 			$sort_order = 'ASC';
-		} else {
-			$sort_by = 'id';
+		} elseif ($this->input->post('post-order-by') == 'categorie_desc') {
+			$sort_by = 'categorie';
 			$sort_order = 'DESC';
+		} else {
+			$sort_by = 'categorie';
+			$sort_order = 'ASC';
 		}
 
 		$data['title'] = "Liste des produits";
@@ -91,7 +88,7 @@ class Crud extends CI_Controller {
 				$data['illustration'] = $upload_data['file_name'];
                 //store pic data to the db
                 $this->mcrud->add($data);
-                redirect('crud/data', 'refresh');
+                redirect('crud', 'refresh');
             }
             $this->load->view('footer');
         }

@@ -7,6 +7,7 @@
 			<div class="form-group" class="col-xs-2">
 				<label for="tri">Trier par</label>
 				<select name="post-order-by" class="input-medium" id="tri" onchange="this.form.submit();">
+					<option id="id" value="id" <?php if (($this->input->post('post-order-by')) == "id") {echo "selected";} ?>>Dernier ajout</option>
 					<optgroup label="Prix">
 						<option id="prix_asc" value="prix_asc" <?php if (($this->input->post('post-order-by')) == "prix_asc") {echo "selected";} ?>>Prix croissant</option>
 						<option id="prix_desc" value="prix_desc" <?php if (($this->input->post('post-order-by')) == "prix_desc") {echo "selected";} ?>>Prix décroissant</option>
