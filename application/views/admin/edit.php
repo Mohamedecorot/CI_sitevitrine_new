@@ -1,40 +1,53 @@
 <?php if($this->session->userdata('username') != ''): ?>
 
-    <?php
-    echo form_open('crud/update', 'class="myform"');
-    ?>
+<?php
+echo form_open_multipart('crud/save', 'class="myform"');
+?>
 
-    <div class="form-group">
-        <label for="id">ID du produit</label>
-        <input type="text" name="id" id="id" class="form-control" value="<?php echo $id ?>" readonly>
-    </div>
-    <div class="form-group">
-        <label for="nom">Nom du produit</label>
-        <input type="text" name="nom" id="nom" class="form-control" value="<?php echo $nom ?>">
-    </div>
-    <div class="form-group">
-        <label for="description">Description du produit</label>
-        <input type="text" name="description" id="description" class="form-control" value="<?php echo $description ?>">
-    </div>
-    <div class="form-group">
-        <label for="categorie">Catégorie du produit</label>
-        <input type="text" name="categorie" id="categorie" class="form-control" value="<?php echo $categorie ?>">
-    </div>
-    <div class="form-group">
-        <label for="illustration">Illustration du produit</label>
-        <input type="text" name="illustration" id="illustration" class="form-control" value="<?php echo $illustration ?>">
-    </div>
-    <div class="form-group">
-        <label for="prix">Prix du produit</label>
-        <input type="text" name="prix" id="prix" class="form-control" value="<?php echo $prix ?>">
-    </div>
-    <input type="submit" name="edit" class="btn btn-primary" value="Update">
-    <a href="<?php echo site_url('crud') ?>" class="btn btn-link">Retour en arrière</a>
-    <?php
-    echo form_close();
-    ?>
+<div class="form-group">
+    <?php echo form_label('Id du produit', 'id'); ?>
+    <input type="text" name="id" id="id" class="form-control" value="<?php echo $id ?>" readonly>
+</div>
+
+<div class="form-group">
+    <?php echo form_label('Nom du produit', 'nom'); ?>
+    <input type="text" name="nom" id="nom" class="form-control" value="<?php echo $nom ?>">
+    <?php echo form_error('nom', '<p class="error">', '</p>'); ?>
+</div>
+
+<div class="form-group">
+    <?php echo form_label('Description du produit', 'description'); ?>
+    <input type="text" name="description" id="description" class="form-control" value="<?php echo $description ?>">
+    <?php echo form_error('description', '<p class="error">', '</p>'); ?>
+</div>
+
+<div class="form-group">
+    <?php echo form_label('Catégorie du produit', 'categorie'); ?>
+    <input type="text" name="categorie" id="categorie" class="form-control" value="<?php echo $categorie ?>">
+    <?php echo form_error('categorie', '<p class="error">', '</p>'); ?>
+</div>
+
+<div class="form-group">
+    <?php echo form_label('Prix du produit', 'prix'); ?>
+    <input type="text" name="prix" id="prix" class="form-control" value="<?php echo $prix ?>">
+    <?php echo form_error('prix', '<p class="error">', '</p>'); ?>
+</div>
+
+<div class="form-group">
+    <?php echo form_label('Selectionnez une image du produit (gif, jpg, png, jpeg)', 'illustration'); ?>
+    <input type="text" name="illustration" id="illustration" class="form-control" value="<?php echo $illustration ?>">
+    <?php if (isset($error)) { echo '<div class="error">' . $error . '</div>'; } ?>
+</div>
+
+<input type="submit" name="edit" class="btn btn-primary" value="Update">
+
+<a href="<?php echo site_url('crud') ?>" class="btn btn-link">Retour en arrière</a>
+
+<?php
+echo form_close();
+?>
 
 <?php else: ?>
-    <div class="alert alert-danger">Vous n'avez pas accès à cette page</div>
-    <?php redirect(base_url() . 'main/login'); ?>
+<div class="alert alert-danger">Vous n'avez pas accès à cette page</div>
+<?php redirect(base_url() . 'main/login'); ?>
 <?php endif ?>
