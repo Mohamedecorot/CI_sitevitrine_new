@@ -75,7 +75,6 @@ class Crud extends CI_Controller {
 
             $this->load->library('upload', $config);
             if ( ! $this->upload->do_upload('illustration')){
-				//$error = array('error' => $this->upload->display_errors('', ''));
 				$error = $this->upload->display_errors('', '');
                 $data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
@@ -101,7 +100,7 @@ class Crud extends CI_Controller {
 		if($this->input->post('edit')) {
 			$id = $this->input->post('id');
 			$this->mcrud->update($id);
-			redirect('crud', 'refresh');
+			redirect('crud/data', 'refresh');
 		} else {
 			$id = $this->input->post('id');
 			redirect('crud/choisir/'.$id, 'refresh');

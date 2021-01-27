@@ -7,21 +7,24 @@ class Crud extends CI_Controller {
 		parent::__construct();
     }
 
-	public function index($sort_by = 'id', $sort_order = 'asc')
+	public function index($sort_by = '', $sort_order = '')
 	{
 		// Vérification du choix du visiteur pour le tri des produits
-		if ($this->input->post('post-order-by') == 'prix_desc') {
+		if ($this->input->post('post-order-by') == 'categorie_desc') {
+			$sort_by = 'categorie';
+			$sort_order = 'DESC';
+		} elseif ($this->input->post('post-order-by') == 'categorie_asc'){
+			$sort_by = 'categorie';
+			$sort_order = 'ASC';
+		} elseif ($this->input->post('post-order-by') == 'prix_desc') {
 			$sort_by = 'prix';
 			$sort_order = 'DESC';
 		} elseif ($this->input->post('post-order-by') == 'prix_asc') {
 			$sort_by = 'prix';
 			$sort_order = 'ASC';
-		} elseif ($this->input->post('post-order-by') == 'categorie_desc') {
-			$sort_by = 'categorie';
-			$sort_order = 'DESC';
 		} else {
-			$sort_by = 'categorie';
-			$sort_order = 'ASC';
+			$sort_by = 'id';
+			$sort_order = 'DESC';
 		}
 
 		$data['title'] = "Liste des produits";
@@ -72,7 +75,6 @@ class Crud extends CI_Controller {
 
             $this->load->library('upload', $config);
             if ( ! $this->upload->do_upload('illustration')){
-				//$error = array('error' => $this->upload->display_errors('', ''));
 				$error = $this->upload->display_errors('', '');
                 $data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
@@ -88,7 +90,7 @@ class Crud extends CI_Controller {
 				$data['illustration'] = $upload_data['file_name'];
                 //store pic data to the db
                 $this->mcrud->add($data);
-                redirect('crud', 'refresh');
+                redirect('crud/data', 'refresh');
             }
             $this->load->view('footer');
         }
@@ -98,7 +100,7 @@ class Crud extends CI_Controller {
 		if($this->input->post('edit')) {
 			$id = $this->input->post('id');
 			$this->mcrud->update($id);
-			redirect('crud', 'refresh');
+			redirect('crud/data', 'refresh');
 		} else {
 			$id = $this->input->post('id');
 			redirect('crud/choisir/'.$id, 'refresh');

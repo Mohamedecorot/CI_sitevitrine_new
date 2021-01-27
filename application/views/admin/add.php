@@ -1,5 +1,6 @@
 <?php if($this->session->userdata('username') != ''): ?>
 
+
 <?php
 echo form_open_multipart('crud/save', 'class="myform"');
 ?>
@@ -43,6 +44,5 @@ echo form_close();
 ?>
 
 <?php else: ?>
-<div class="alert alert-danger">Vous n'avez pas accès à cette page</div>
 <?php redirect(base_url() . 'main/login'); ?>
 <?php endif ?>
