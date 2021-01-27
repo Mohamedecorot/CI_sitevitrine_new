@@ -4,22 +4,19 @@
 			<h1>Listes des produits</h1>
 		</div>
 		<form method="post">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="post-order-by" id="categorie_asc" class="form-check-input" value="categorie_asc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "categorie_asc") {echo "checked";} ?>>
-				<span>categorie (A->Z)</span>
-			</label>
-			<label class="form-check form-check-inline">
-				<input type="radio" name="post-order-by" id="categorie_desc" class="form-check-input" value="categorie_desc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "categorie_desc") {echo "checked";} ?>>
-				<span>categorie (Z->A)</span>
-			</label>
-			<label class="form-check form-check-inline">
-				<input type="radio" name="post-order-by" id="prix_asc" class="form-check-input" value="prix_asc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "prix_asc") {echo "checked";} ?>>
-				<span>prix croissant</span>
-			</label>
-			<label class="form-check form-check-inline">
-				<input type="radio" name="post-order-by" id="prix_desc" class="form-check-input" value="prix_desc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "prix_desc") {echo "checked";} ?>>
-				<span>prix décroissant</span>
-			</label>
+			<div class="form-group" class="col-xs-2">
+				<label for="tri">Trier par</label>
+				<select name="post-order-by" class="input-medium" id="tri" onchange="this.form.submit();">
+					<optgroup label="Prix">
+						<option id="prix_asc" value="prix_asc" <?php if (($this->input->post('post-order-by')) == "prix_asc") {echo "selected";} ?>>Prix croissant</option>
+						<option id="prix_desc" value="prix_desc" <?php if (($this->input->post('post-order-by')) == "prix_desc") {echo "selected";} ?>>Prix décroissant</option>
+					</optgroup>
+					<optgroup label="Catégorie">
+						<option id="categorie_asc" value="categorie_asc" <?php if (($this->input->post('post-order-by')) == "categorie_asc") {echo "selected";} ?>>Catégorie croissante</option>
+						<option id="categorie_desc" value="categorie_desc" <?php if (($this->input->post('post-order-by')) == "categorie_desc") {echo "selected";} ?>>Catégorie décroissante</option>
+					</optgroup>
+				</select>
+			</div>
 		</form>
 	</div>
 	<div class="row">
