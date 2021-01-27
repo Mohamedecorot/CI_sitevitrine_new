@@ -7,20 +7,35 @@ class Crud extends CI_Controller {
 		parent::__construct();
     }
 
-	public function index()
+	public function index($sort_by = 'id', $sort_order = 'asc')
 	{
+
+		if ($this->input->post('post-order-by') == 'prix_desc') {
+			$sort_by = 'prix';
+			$sort_order = 'DESC';
+		} elseif ($this->input->post('post-order-by') == 'prix_asc') {
+			$sort_by = 'prix';
+			$sort_order = 'ASC';
+		} elseif ($this->input->post('post-order-by') == 'categorie_desc') {
+			$sort_by = 'categorie';
+			$sort_order = 'DESC';
+		} else {
+			$sort_by = 'categorie';
+			$sort_order = 'ASC';
+		}
+
 		$data['title'] = "Liste des produits";
-		$data['mydata'] = $this->mcrud->view();
+		$data['mydata'] = $this->mcrud->view($sort_by, $sort_order);
 
 		$this->load->view('header', $data);
 		$this->load->view('afficher_produit', $data);
 		$this->load->view('footer');
 	}
 
-	public function data()
+	public function data($sort_by = 'id', $sort_order = 'desc')
 	{
 		$data['title'] = "Listes des produits";
-		$data['mydata'] = $this->mcrud->view();
+		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc');
 
 		$this->load->view('header', $data);
 		$this->load->view('admin/data');
@@ -31,6 +46,7 @@ class Crud extends CI_Controller {
 	{
 		$data['title'] = "Ajouter un produit";
 		$this->load->view('header', $data);
+
 		$this->load->view('admin/add');
 		$this->load->view('footer');
 	}
@@ -53,7 +69,6 @@ class Crud extends CI_Controller {
 				'overwrite' => TRUE,
 				'max_size' => "2048000"
 				);
-			$this->form_validation->set_message('allowed_types', 'Veuillez uploader un fichier au bon format gif, jpg, png, jpeg');
 
             $this->load->library('upload', $config);
             if ( ! $this->upload->do_upload('illustration')){

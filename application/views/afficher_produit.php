@@ -2,12 +2,25 @@
 	<div class="row my-3">
 		<div class="col">
 			<h1>Listes des produits</h1>
-			<?php echo form_label('Trier par  ', 'tri'); ?>
-			<select style="width: 122px;" name="tri" onchange="this.form.submit();">
-				<option value="category">Catégorie</option>
-				<option value="price">Prix</option>
-			</select>
 		</div>
+		<form method="post">
+			<label class="form-check form-check-inline">
+				<input type="radio" name="post-order-by" id="categorie_asc" class="form-check-input" value="categorie_asc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "categorie_asc") {echo "checked";} ?>>
+				<span>categorie (A->Z)</span>
+			</label>
+			<label class="form-check form-check-inline">
+				<input type="radio" name="post-order-by" id="categorie_desc" class="form-check-input" value="categorie_desc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "categorie_desc") {echo "checked";} ?>>
+				<span>categorie (Z->A)</span>
+			</label>
+			<label class="form-check form-check-inline">
+				<input type="radio" name="post-order-by" id="prix_asc" class="form-check-input" value="prix_asc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "prix_asc") {echo "checked";} ?>>
+				<span>prix croissant</span>
+			</label>
+			<label class="form-check form-check-inline">
+				<input type="radio" name="post-order-by" id="prix_desc" class="form-check-input" value="prix_desc" required onchange="this.form.submit();" <?php if (($this->input->post('post-order-by')) == "prix_desc") {echo "checked";} ?>>
+				<span>prix décroissant</span>
+			</label>
+		</form>
 	</div>
 	<div class="row">
 		<?php foreach($mydata as $produit): ?>

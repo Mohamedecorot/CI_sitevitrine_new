@@ -4,15 +4,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Mcrud extends CI_Model {
 
 
-	function view()
+	function view($sort_by, $sort_order)
 	{
-        $importer = $this->db->get('listeproduits');
-        if($importer->num_rows() > 0) {
-            foreach ($importer->result() as $data) {
-                $resultat[] = $data;
-            }
-            return $resultat;
-        }
+        // $importer = $this->db->get('listeproduits')->order_by('prix', 'DESC');
+        // if($importer->num_rows() > 0) {
+        //     foreach ($importer->result() as $data) {
+        //         $resultat[] = $data;
+        //     }
+        //     return $resultat;
+        //}
+
+        // $sort_order = ($sort_order == 'desc') ? 'desc' : 'asc';
+        // $sort_columns = array('id', 'nom', 'description', 'categorie', 'illustration', 'prix');
+        // $sort_by = (in_array($sort_by, $sort_columns)) ? $sort_by : 'id';
+
+        $this->db->order_by($sort_by, $sort_order);
+        $all_product = $this->db->get('listeproduits');
+        return $all_product->result();
     }
 
     function add($data){
