@@ -54,17 +54,72 @@ class Crud extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	public function save(){
-        if ($this->form_validation->run() == FALSE){
+
+	public function save () {
+		$config = array(
+			array(
+				'field' => 'nom',
+				'label' => 'nom',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'min_length' => 'Le %s doit avoir au moins 3 lettres',
+					'max_length' => 'Le %s doit avoir au maximum 50 lettres',
+					'alpha' => 'Le %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'description',
+				'label' => 'description',
+				'rules' => 'required|min_length[3]|max_length[250]',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 250 lettres',
+				),
+			),
+			array(
+				'field' => 'categorie',
+				'label' => 'categorie',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 50 lettres',
+					'alpha' => 'La %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'illustration',
+				'label' => 'illustration',
+				'rules' => 'uploaded',
+				'errors' => array(
+					'uploaded'  => 'Merci d\'inserer une %s du produit'
+				),
+			),
+			array(
+				'field' => 'prix',
+				'label' => 'prix',
+				'rules' => 'required|alpha_numeric',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'alpha_numeric' => 'Le %s doit être un chiffre'
+				),
+			)
+		);
+
+		$this->form_validation->set_rules($config);
+
+		if ($this->form_validation->run() == FALSE) {
 			$data['title'] = "Erreur: rajoutez le produit";
 			$this->load->view('header', $data);
 			$this->load->view('admin/add');
 			$this->load->view('footer');
-        } else {
-            $data['nom'] = $this->input->post('nom', TRUE);
-            $data['description'] = $this->input->post('description', TRUE);
-            $data['categorie'] = $this->input->post('categorie', TRUE);
-            $data['prix'] = $this->input->post('prix', TRUE);
+		} else {
+			$data['nom'] = $this->input->post('nom', TRUE);
+			$data['description'] = $this->input->post('description', TRUE);
+			$data['categorie'] = $this->input->post('categorie', TRUE);
+			$data['prix'] = $this->input->post('prix', TRUE);
 
 			$config = array(
 				'upload_path' => "./uploads/",
@@ -73,28 +128,29 @@ class Crud extends CI_Controller {
 				'max_size' => "2048000"
 				);
 
-            $this->load->library('upload', $config);
-            if ( ! $this->upload->do_upload('illustration')){
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('illustration')){
 				$error = $this->upload->display_errors('', '');
-                $data['error'] = $error;
+				$data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
 
 				$this->load->view('header', $data);
 				$this->load->view('admin/add', $data);
 				$this->load->view('footer');
-            } else {
-                //file is uploaded successfully
-                //now get the file uploaded data
-                $upload_data = $this->upload->data();
-                //get the uploaded file name
+			} else {
+				//file is uploaded successfully
+				//now get the file uploaded data
+				$upload_data = $this->upload->data();
+				//get the uploaded file name
 				$data['illustration'] = $upload_data['file_name'];
-                //store pic data to the db
-                $this->mcrud->add($data);
-                redirect('crud/data', 'refresh');
-            }
-            $this->load->view('footer');
-        }
-    }
+				//store pic data to the db
+				$this->mcrud->add($data);
+				redirect('crud/data', 'refresh');
+			}
+			$this->load->view('footer');
+		}
+	}
+
 
 	public function update() {
 		if($this->input->post('edit')) {

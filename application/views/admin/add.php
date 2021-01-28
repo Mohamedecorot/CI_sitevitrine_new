@@ -1,6 +1,5 @@
 <?php if($this->session->userdata('username') != ''): ?>
 
-
 <?php
 echo form_open_multipart('crud/save', 'class="myform"');
 ?>
