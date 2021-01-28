@@ -132,8 +132,8 @@ class Crud extends CI_Controller {
 
 			$this->load->library('upload', $config);
 			if ( ! $this->upload->do_upload('illustration')){
-				$error = $this->upload->display_errors('', '');
-				$data['error'] = $error;
+				// $error = $this->upload->display_errors('', '');
+				// $data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
 
 				$this->load->view('header', $data);
