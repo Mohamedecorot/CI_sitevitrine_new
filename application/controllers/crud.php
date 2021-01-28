@@ -116,10 +116,12 @@ class Crud extends CI_Controller {
 			$this->load->view('admin/add');
 			$this->load->view('footer');
 		} else {
-			$data['nom'] = $this->input->post('nom', TRUE);
-			$data['description'] = $this->input->post('description', TRUE);
-			$data['categorie'] = $this->input->post('categorie', TRUE);
-			$data['prix'] = $this->input->post('prix', TRUE);
+			$data = [
+				'nom' =>  $this->input->post('nom'),
+				'description' =>  $this->input->post('description'),
+				'categorie' =>  $this->input->post('categorie'),
+				'prix' =>  $this->input->post('prix')
+			];
 
 			$config = array(
 				'upload_path' => "./uploads/",
@@ -147,23 +149,103 @@ class Crud extends CI_Controller {
 				$this->mcrud->add($data);
 				redirect('crud/data', 'refresh');
 			}
-			$this->load->view('footer');
 		}
 	}
 
 
-	public function update() {
-		if($this->input->post('edit')) {
-			$id = $this->input->post('id');
-			$this->mcrud->update($id);
-			redirect('crud/data', 'refresh');
+	public function update($id) {
+		$config = array(
+			array(
+				'field' => 'nom',
+				'label' => 'nom',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'min_length' => 'Le %s doit avoir au moins 3 lettres',
+					'max_length' => 'Le %s doit avoir au maximum 50 lettres',
+					'alpha' => 'Le %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'description',
+				'label' => 'description',
+				'rules' => 'required|min_length[3]|max_length[250]',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 250 lettres',
+				),
+			),
+			array(
+				'field' => 'categorie',
+				'label' => 'categorie',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 50 lettres',
+					'alpha' => 'La %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'illustration',
+				'label' => 'illustration',
+				'rules' => 'uploaded',
+				'errors' => array(
+					'uploaded'  => 'Merci d\'inserer une %s du produit'
+				),
+			),
+			array(
+				'field' => 'prix',
+				'label' => 'prix',
+				'rules' => 'required|alpha_numeric',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'alpha_numeric' => 'Le %s doit être un chiffre'
+				),
+			)
+		);
+
+		$this->form_validation->set_rules($config);
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->edit($id);
 		} else {
-			$id = $this->input->post('id');
-			redirect('crud/choisir/'.$id, 'refresh');
+			$data = [
+				'nom' =>  $this->input->post('nom'),
+				'description' =>  $this->input->post('description'),
+				'categorie' =>  $this->input->post('categorie'),
+				'prix' =>  $this->input->post('prix')
+			];
+
+			$config = array(
+				'upload_path' => "./uploads/",
+				'allowed_types' => "gif|jpg|png|jpeg",
+				'overwrite' => TRUE,
+				'max_size' => "2048000"
+				);
+
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('illustration')){
+				$error = $this->upload->display_errors('', '');
+				$data['error'] = $error;
+				$data['title'] = "Erreur sur le fichier";
+
+				$this->load->view('header', $data);
+				$this->load->view('admin/add', $data);
+				$this->load->view('footer');
+			} else {
+				$upload_data = $this->upload->data();
+				//get the uploaded file name
+				$data['illustration'] = $upload_data['file_name'];
+				//store pic data to the db
+				$this->mcrud->update($data, $id);
+				redirect('crud/data', 'refresh');
+			}
 		}
 	}
 
-	public function choisir() {
+	public function edit() {
 		$id = $this->uri->segment(3);
 		if($id == null){
 			redirect('crud');

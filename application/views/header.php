@@ -30,6 +30,9 @@
         <?php endif ?>
         <?php if($this->session->userdata('username') != ''): ?>
           <li class="nav-item active">
+            <a class="nav-link active" href="<?php echo site_url('crud/data') ?>">Liste des produits</a>
+          </li>
+          <li class="nav-item active">
             <a class="nav-link active" href="<?php echo site_url('crud/add') ?>">Ajouter un produit</a>
           </li>
           <li class="nav-item">

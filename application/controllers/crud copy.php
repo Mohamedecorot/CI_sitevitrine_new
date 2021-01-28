@@ -103,11 +103,11 @@ class Crud extends CI_Controller {
 			redirect('crud/data', 'refresh');
 		} else {
 			$id = $this->input->post('id');
-			redirect('crud/choisir/'.$id, 'refresh');
+			redirect('crud/edit/'.$id, 'refresh');
 		}
 	}
 
-	public function choisir() {
+	public function edit() {
 		$id = $this->uri->segment(3);
 		if($id == null){
 			redirect('crud');
