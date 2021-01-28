@@ -39,6 +39,9 @@ class Crud extends CI_Controller {
 	{
 		$data['title'] = "Listes des produits";
 		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc');
+		$data['msg_add'] = $this->session->flashdata('msg_add');
+		$data['msg_delete'] = $this->session->flashdata('msg_delete');
+		$data['msg_update'] = $this->session->flashdata('msg_update');
 
 		$this->load->view('header', $data);
 		$this->load->view('admin/data');
@@ -48,6 +51,7 @@ class Crud extends CI_Controller {
 	public function add()
 	{
 		$data['title'] = "Ajouter un produit";
+
 		$this->load->view('header', $data);
 
 		$this->load->view('admin/add');
@@ -147,6 +151,7 @@ class Crud extends CI_Controller {
 				$data['illustration'] = $upload_data['file_name'];
 				//store pic data to the db
 				$this->mcrud->add($data);
+				$this->session->set_flashdata('msg_add', '<div class="alert alert-success" role="alert"> Le produit a bien été ajouté </div>');
 				redirect('crud/data', 'refresh');
 			}
 		}
@@ -240,6 +245,7 @@ class Crud extends CI_Controller {
 				$data['illustration'] = $upload_data['file_name'];
 				//store pic data to the db
 				$this->mcrud->update($data, $id);
+				$this->session->set_flashdata('msg_update', '<div class="alert alert-success" role="alert"> Le produit a bien été modifié </div>');
 				redirect('crud/data', 'refresh');
 			}
 		}
@@ -276,6 +282,7 @@ class Crud extends CI_Controller {
 
 		// suppression de la donnée
 		$this->mcrud->del($id);
+		$this->session->set_flashdata('msg_delete', '<div class="alert alert-success" role="alert"> Le produit a bien été supprimé </div>');
 		redirect('crud/data', 'refresh');
 	}
 }

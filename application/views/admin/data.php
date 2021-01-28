@@ -3,6 +3,10 @@
         echo '<h2>Bienvenue '.$this->session->userdata('username').'</h2>';
     ?>
 
+    <?php echo $msg_add; ?>
+    <?php echo $msg_delete; ?>
+    <?php echo $msg_update; ?>
+
     <p>
         <a href="<?php echo site_url('crud/add') ?>" class="btn btn-dark">Ajouter un nouveau produit</a>
     </p>
