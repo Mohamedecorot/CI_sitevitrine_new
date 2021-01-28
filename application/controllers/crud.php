@@ -266,6 +266,15 @@ class Crud extends CI_Controller {
 
 	public function del() {
 		$id = $this->uri->segment(3);
+
+		// suppression de l'image
+		$result = $this->db->get_where('listeproduits', array('id' => $id));
+		$rows = $result->result();
+		foreach ($rows as $row) {
+			unlink("./uploads/".$row->illustration);
+		}
+
+		// suppression de la donnée
 		$this->mcrud->del($id);
 		redirect('crud/data', 'refresh');
 	}
