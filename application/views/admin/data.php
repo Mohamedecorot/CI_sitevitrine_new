@@ -19,6 +19,7 @@
                     <th>Catégorie</th>
                     <th>Illustration</th>
                     <th>Prix</th>
+                    <th>Ajouté par</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -39,6 +40,7 @@
                     <td><?php echo $row->categorie ?></td>
                     <td><?php echo $row->illustration ?></td>
                     <td><?php echo $row->prix ?></td>
+                    <td><?php echo $row->add_by ?></td>
                     <td class="text-center">
                         <a href="<?php echo site_url('crud/edit/'.$row->id) ?>" class="btn btn-warning">Modifier</a>
                         <a href="<?php echo site_url('crud/del/'.$row->id) ?>" class="btn btn-danger" onclick="return confirm('êtes-vous sûr ?')">Supprimer</a>

@@ -124,7 +124,8 @@ class Crud extends CI_Controller {
 				'nom' =>  $this->input->post('nom'),
 				'description' =>  $this->input->post('description'),
 				'categorie' =>  $this->input->post('categorie'),
-				'prix' =>  $this->input->post('prix')
+				'prix' =>  $this->input->post('prix'),
+				'add_by' => $this->session->userdata('username')
 			];
 
 			$config = array(
@@ -220,7 +221,8 @@ class Crud extends CI_Controller {
 				'nom' =>  $this->input->post('nom'),
 				'description' =>  $this->input->post('description'),
 				'categorie' =>  $this->input->post('categorie'),
-				'prix' =>  $this->input->post('prix')
+				'prix' =>  $this->input->post('prix'),
+				'add_by' => $this->session->userdata('username')
 			];
 
 			$config = array(

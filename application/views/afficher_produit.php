@@ -29,7 +29,7 @@
 						<h4 class="card-title"><?= htmlentities($produit->nom); ?></h4>
 						<h6 class="card-text">Catégorie : <?= $produit->categorie; ?></h6>
 						<p class="card-text"><?= $produit->description; ?></p>
-						<p class="card-text" style="text-align:right">Prix : <?= $produit->prix; ?> €</p>
+						<p class="card-text" style="text-align:right; font-weight:bold">Prix : <?= $produit->prix; ?> €</p>
 						<p class="card-text" style="text-align:center">Produit ajouté par <?= $produit->add_by; ?></p>
 					</div>
 				</div>
