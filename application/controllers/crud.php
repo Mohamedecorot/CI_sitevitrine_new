@@ -53,13 +53,13 @@ class Crud extends CI_Controller {
 		$data['title'] = "Ajouter un produit";
 
 		$this->load->view('header', $data);
-
 		$this->load->view('admin/add');
 		$this->load->view('footer');
 	}
 
 
 	public function save () {
+
 		$config = array(
 			array(
 				'field' => 'nom',
