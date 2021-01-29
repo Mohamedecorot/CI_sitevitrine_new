@@ -16,12 +16,11 @@ class Mcrud extends CI_Model {
     }
 
     function add($data) {
-        $this->db->insert('listeproduits', $data);
+        return $this->db->insert('listeproduits', $data);
     }
 
     function edit($id) {
-        $id = $this->db->get_where('listeproduits', array('id'=>$id))->row();
-        return $id;
+        return $this->db->get_where('listeproduits', array('id'=>$id))->row();
     }
 
     function update($data, $id) {
