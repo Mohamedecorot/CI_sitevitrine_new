@@ -11,6 +11,9 @@
       .error {
         color: #f00;
       }
+      .col-12, .col-lg-4 {
+        margin-bottom: 20px;
+      }
     </style>
     <title><?php echo $title ?></title>
   </head>
@@ -42,4 +45,4 @@
         </ul>
       </div>
     </nav>
-    <div class="container" style="margin-top:50px">
+    <div class="container" style="margin-top:30px">

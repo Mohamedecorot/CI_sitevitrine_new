@@ -28,7 +28,7 @@ class Crud extends CI_Controller {
 		}
 
 		$data['title'] = "Liste des produits";
-		$data['mydata'] = $this->mcrud->view($sort_by, $sort_order);
+		$data['mydata'] = $this->mcrud->view($sort_by, $sort_order, false);
 
 		$this->load->view('header', $data);
 		$this->load->view('afficher_produit', $data);
@@ -38,7 +38,11 @@ class Crud extends CI_Controller {
 	public function data($sort_by = 'id', $sort_order = 'desc')
 	{
 		$data['title'] = "Listes des produits";
-		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc');
+		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc', false);
+
+		$data['msg_add'] = $this->session->flashdata('msg_add');
+		$data['msg_delete'] = $this->session->flashdata('msg_delete');
+		$data['msg_update'] = $this->session->flashdata('msg_update');
 
 		$this->load->view('header', $data);
 		$this->load->view('admin/data');
@@ -48,23 +52,91 @@ class Crud extends CI_Controller {
 	public function add()
 	{
 		$data['title'] = "Ajouter un produit";
-		$this->load->view('header', $data);
 
+		$this->load->view('header', $data);
 		$this->load->view('admin/add');
 		$this->load->view('footer');
 	}
 
-	public function save(){
-        if ($this->form_validation->run() == FALSE){
+	public function myproduct()
+	{
+		$data['title'] = "Produits que vous avez ajouté";
+		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc', true);
+
+		$this->load->view('header', $data);
+		$this->load->view('admin/myproduct');
+		$this->load->view('footer');
+	}
+
+	public function save () {
+
+		$config = array(
+			array(
+				'field' => 'nom',
+				'label' => 'nom',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'min_length' => 'Le %s doit avoir au moins 3 lettres',
+					'max_length' => 'Le %s doit avoir au maximum 50 lettres',
+					'alpha' => 'Le %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'description',
+				'label' => 'description',
+				'rules' => 'required|min_length[3]|max_length[250]',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 250 lettres',
+				),
+			),
+			array(
+				'field' => 'categorie',
+				'label' => 'categorie',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 50 lettres',
+					'alpha' => 'La %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'illustration',
+				'label' => 'illustration',
+				'rules' => 'uploaded',
+				'errors' => array(
+					'uploaded'  => 'Merci d\'inserer une %s du produit'
+				),
+			),
+			array(
+				'field' => 'prix',
+				'label' => 'prix',
+				'rules' => 'required|alpha_numeric',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'alpha_numeric' => 'Le %s doit être un chiffre'
+				),
+			)
+		);
+
+		$this->form_validation->set_rules($config);
+
+		if ($this->form_validation->run() == FALSE) {
 			$data['title'] = "Erreur: rajoutez le produit";
 			$this->load->view('header', $data);
 			$this->load->view('admin/add');
 			$this->load->view('footer');
-        } else {
-            $data['nom'] = $this->input->post('nom', TRUE);
-            $data['description'] = $this->input->post('description', TRUE);
-            $data['categorie'] = $this->input->post('categorie', TRUE);
-            $data['prix'] = $this->input->post('prix', TRUE);
+		} else {
+			$data = [
+				'nom' =>  $this->input->post('nom'),
+				'description' =>  $this->input->post('description'),
+				'categorie' =>  $this->input->post('categorie'),
+				'prix' =>  $this->input->post('prix'),
+				'add_by' => $this->session->userdata('username')
+			];
 
 			$config = array(
 				'upload_path' => "./uploads/",
@@ -73,37 +145,118 @@ class Crud extends CI_Controller {
 				'max_size' => "2048000"
 				);
 
-            $this->load->library('upload', $config);
-            if ( ! $this->upload->do_upload('illustration')){
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('illustration')){
+				$data['title'] = "Erreur sur le fichier";
+				$this->load->view('header', $data);
+				$this->load->view('admin/add', $data);
+				$this->load->view('footer');
+			} else {
+				//file is uploaded successfully
+				//now get the file uploaded data
+				$upload_data = $this->upload->data();
+				//get the uploaded file name
+				$data['illustration'] = $upload_data['file_name'];
+				//store pic data to the db
+				$this->mcrud->add($data);
+				$this->session->set_flashdata('msg_add', '<div class="alert alert-success" role="alert"> Le produit a bien été ajouté </div>');
+				redirect('crud/data', 'refresh');
+			}
+		}
+	}
+
+
+	public function update($id) {
+		$config = array(
+			array(
+				'field' => 'nom',
+				'label' => 'nom',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'min_length' => 'Le %s doit avoir au moins 3 lettres',
+					'max_length' => 'Le %s doit avoir au maximum 50 lettres',
+					'alpha' => 'Le %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'description',
+				'label' => 'description',
+				'rules' => 'required|min_length[3]|max_length[250]',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 250 lettres',
+				),
+			),
+			array(
+				'field' => 'categorie',
+				'label' => 'categorie',
+				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'errors' => array(
+					'required'  => 'Merci de rentrer la %s du produit',
+					'min_length' => 'La %s doit avoir au moins 3 lettres',
+					'max_length' => 'La %s doit avoir au maximum 50 lettres',
+					'alpha' => 'La %s ne doit comporter que des lettres',
+				),
+			),
+			array(
+				'field' => 'illustration',
+				'label' => 'illustration',
+				'rules' => 'uploaded',
+				'errors' => array(
+					'uploaded'  => 'Merci d\'inserer une %s du produit'
+				),
+			),
+			array(
+				'field' => 'prix',
+				'label' => 'prix',
+				'rules' => 'required|alpha_numeric',
+				'errors' => array(
+					'required'  => 'Merci de rentrer le %s du produit',
+					'alpha_numeric' => 'Le %s doit être un chiffre'
+				),
+			)
+		);
+
+		$this->form_validation->set_rules($config);
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->edit($id);
+		} else {
+			$data = [
+				'nom' =>  $this->input->post('nom'),
+				'description' =>  $this->input->post('description'),
+				'categorie' =>  $this->input->post('categorie'),
+				'prix' =>  $this->input->post('prix'),
+				'add_by' => $this->session->userdata('username')
+			];
+
+			$config = array(
+				'upload_path' => "./uploads/",
+				'allowed_types' => "gif|jpg|png|jpeg",
+				'overwrite' => TRUE,
+				'max_size' => "2048000"
+				);
+
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('illustration')){
 				$error = $this->upload->display_errors('', '');
-                $data['error'] = $error;
+				$data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
 
 				$this->load->view('header', $data);
 				$this->load->view('admin/add', $data);
 				$this->load->view('footer');
-            } else {
-                //file is uploaded successfully
-                //now get the file uploaded data
-                $upload_data = $this->upload->data();
-                //get the uploaded file name
+			} else {
+				$upload_data = $this->upload->data();
+				// Récuperer le nom du fichier
 				$data['illustration'] = $upload_data['file_name'];
-                //store pic data to the db
-                $this->mcrud->add($data);
-                redirect('crud/data', 'refresh');
-            }
-            $this->load->view('footer');
-        }
-    }
-
-	public function update() {
-		if($this->input->post('edit')) {
-			$id = $this->input->post('id');
-			$this->mcrud->update($id);
-			redirect('crud/data', 'refresh');
-		} else {
-			$id = $this->input->post('id');
-			redirect('crud/edit/'.$id, 'refresh');
+				// Inserer "l'image" dans la bdd
+				$this->mcrud->update($data, $id);
+				$this->session->set_flashdata('msg_update', '<div class="alert alert-success" role="alert"> Le produit a bien été modifié </div>');
+				redirect('crud/data', 'refresh');
+			}
 		}
 	}
 
@@ -128,7 +281,17 @@ class Crud extends CI_Controller {
 
 	public function del() {
 		$id = $this->uri->segment(3);
+
+		// suppression de l'image
+		$result = $this->db->get_where('listeproduits', array('id' => $id));
+		$rows = $result->result();
+		foreach ($rows as $row) {
+			unlink("./uploads/".$row->illustration);
+		}
+
+		// suppression de la donnée
 		$this->mcrud->del($id);
+		$this->session->set_flashdata('msg_delete', '<div class="alert alert-success" role="alert"> Le produit a bien été supprimé </div>');
 		redirect('crud/data', 'refresh');
 	}
 }

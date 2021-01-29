@@ -38,7 +38,6 @@ echo form_open_multipart('crud/update/'.$id, 'class="myform"');
     <input type="file" name="illustration" id="illustration" class="form-control"  value="<?php $illustration ?>"/>
     <?php if (isset($error)) { echo '<div class="error">' . $error . '</div>'; } ?>
 </div>
-<?php echo $illustration ?>
 <input type="submit" name="edit" class="btn btn-primary" value="Mettre à jour">
 
 <a href="<?php echo site_url('crud/data') ?>" class="btn btn-link">Retour en arrière</a>

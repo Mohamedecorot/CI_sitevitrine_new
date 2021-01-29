@@ -39,6 +39,7 @@ class Crud extends CI_Controller {
 	{
 		$data['title'] = "Listes des produits";
 		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc', false);
+
 		$data['msg_add'] = $this->session->flashdata('msg_add');
 		$data['msg_delete'] = $this->session->flashdata('msg_delete');
 		$data['msg_update'] = $this->session->flashdata('msg_update');
@@ -146,10 +147,7 @@ class Crud extends CI_Controller {
 
 			$this->load->library('upload', $config);
 			if ( ! $this->upload->do_upload('illustration')){
-				// $error = $this->upload->display_errors('', '');
-				// $data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
-
 				$this->load->view('header', $data);
 				$this->load->view('admin/add', $data);
 				$this->load->view('footer');
@@ -244,24 +242,24 @@ class Crud extends CI_Controller {
 			$this->load->library('upload', $config);
 			if ( ! $this->upload->do_upload('illustration')){
 				$error = $this->upload->display_errors('', '');
+				$data['id'] = $this->uri->segment(3);
 				$data['error'] = $error;
 				$data['title'] = "Erreur sur le fichier";
 
 				$this->load->view('header', $data);
-				$this->load->view('admin/add', $data);
+				$this->load->view('admin/edit', $data);
 				$this->load->view('footer');
 			} else {
 				$upload_data = $this->upload->data();
-				//get the uploaded file name
+				// Récuperer le nom du fichier
 				$data['illustration'] = $upload_data['file_name'];
-				//store pic data to the db
+				// Inserer "l'image" dans la bdd
 				$this->mcrud->update($data, $id);
 				$this->session->set_flashdata('msg_update', '<div class="alert alert-success" role="alert"> Le produit a bien été modifié </div>');
 				redirect('crud/data', 'refresh');
 			}
 		}
 	}
-
 	public function edit() {
 		$id = $this->uri->segment(3);
 		if($id == null){

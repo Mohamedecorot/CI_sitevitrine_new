@@ -22,18 +22,20 @@
 	</div>
 	<div class="row">
 		<?php foreach($mydata as $produit): ?>
-			<div class="col-12 col-lg-4">
+			<div class="col-12 col-lg-3">
 				<div class="card mb-4 mb-lg-0">
 					<a href="<?=base_url().'uploads/'.$produit->illustration;?>" target="_blank"><img src="<?=base_url().'uploads/'.$produit->illustration;?>" alt="" class="card-img-top" width="auto" height="250"></a>
 					<div class="card-body">
 						<h4 class="card-title"><?= htmlentities($produit->nom); ?></h4>
 						<h6 class="card-text">Catégorie : <?= $produit->categorie; ?></h6>
 						<p class="card-text"><?= $produit->description; ?></p>
-						<p class="card-text" style="text-align:right; font-weight:bold">Prix : <?= $produit->prix; ?> €</p>
-						<p class="card-text" style="text-align:center">Produit ajouté par <?= $produit->add_by; ?></p>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted" style="font-weight:bold">Prix : <?= $produit->prix; ?> €</small>
 					</div>
 				</div>
 			</div>
 		<?php endforeach; ?>
+		</div>
 	</div>
 </div>

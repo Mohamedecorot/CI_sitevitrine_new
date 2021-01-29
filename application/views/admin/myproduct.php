@@ -3,11 +3,8 @@
         echo '<h4>Les produits que vous ('.$this->session->userdata('username').') avez ajouté</h4>';
     ?>
 
-    <?php //echo $msg_add; ?>
-    <?php //echo $msg_delete; ?>
-    <?php //echo $msg_update; ?>
-
     <p>
+        <a href="<?php echo site_url('crud/data') ?>" class="btn btn-success">Retour en arrière</a>
         <a href="<?php echo site_url('crud/add') ?>" class="btn btn-dark">Ajouter un nouveau produit</a>
     </p>
         <table class="table table-bordered table-striped">
