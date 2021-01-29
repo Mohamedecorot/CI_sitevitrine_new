@@ -28,7 +28,7 @@ class Crud extends CI_Controller {
 		}
 
 		$data['title'] = "Liste des produits";
-		$data['mydata'] = $this->mcrud->view($sort_by, $sort_order);
+		$data['mydata'] = $this->mcrud->view($sort_by, $sort_order, false);
 
 		$this->load->view('header', $data);
 		$this->load->view('afficher_produit', $data);
@@ -38,7 +38,7 @@ class Crud extends CI_Controller {
 	public function data($sort_by = 'id', $sort_order = 'desc')
 	{
 		$data['title'] = "Listes des produits";
-		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc');
+		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc', false);
 		$data['msg_add'] = $this->session->flashdata('msg_add');
 		$data['msg_delete'] = $this->session->flashdata('msg_delete');
 		$data['msg_update'] = $this->session->flashdata('msg_update');
@@ -57,6 +57,15 @@ class Crud extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	public function myproduct()
+	{
+		$data['title'] = "Produits que vous avez ajouté";
+		$data['mydata'] = $this->mcrud->view($sort_by = 'id', $sort_order = 'desc', true);
+
+		$this->load->view('header', $data);
+		$this->load->view('admin/myproduct');
+		$this->load->view('footer');
+	}
 
 	public function save () {
 

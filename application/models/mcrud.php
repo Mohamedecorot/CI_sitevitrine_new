@@ -4,9 +4,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Mcrud extends CI_Model {
 
 
-	function view($sort_by, $sort_order) {
+	function view($sort_by, $sort_order, $condition) {
         $this->db->order_by($sort_by, $sort_order);
-        $all_product = $this->db->get('listeproduits');
+        if($condition) {
+            $add_by = $this->session->userdata('username');
+            $all_product = $this->db->get_where('listeproduits', array('add_by' => $add_by));
+        } else {
+            $all_product = $this->db->get('listeproduits');
+        }
         return $all_product->result();
     }
 
