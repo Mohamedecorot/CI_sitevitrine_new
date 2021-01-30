@@ -142,7 +142,8 @@ class Crud extends CI_Controller {
 				'upload_path' => "./uploads/",
 				'allowed_types' => "gif|jpg|png|jpeg",
 				'overwrite' => TRUE,
-				'max_size' => "2048000"
+				'max_size' => "2048000",
+				'encrypt_name' => TRUE
 				);
 
 			$this->load->library('upload', $config);
@@ -155,7 +156,7 @@ class Crud extends CI_Controller {
 				//file is uploaded successfully
 				//now get the file uploaded data
 				$upload_data = $this->upload->data();
-				//get the uploaded file name
+				//get the uploaded file name uniqid(rand()).
 				$data['illustration'] = $upload_data['file_name'];
 				//store pic data to the db
 				$this->mcrud->add($data);
