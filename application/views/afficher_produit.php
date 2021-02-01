@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row my-3">
 		<div class="col">
-			<h1>Listes des produits</h1>
+			<h1 style="text-align: center;">Listes des produits</h1>
 		</div>
 		<form method="post">
 			<div class="form-group" class="col-xs-2">

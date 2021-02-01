@@ -74,7 +74,7 @@ class Crud extends CI_Controller {
 			array(
 				'field' => 'nom',
 				'label' => 'nom',
-				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'rules' => 'required|min_length[3]|max_length[50]',
 				'errors' => array(
 					'required'  => 'Merci de rentrer le %s du produit',
 					'min_length' => 'Le %s doit avoir au moins 3 lettres',
@@ -95,7 +95,7 @@ class Crud extends CI_Controller {
 			array(
 				'field' => 'categorie',
 				'label' => 'categorie',
-				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'rules' => 'required|min_length[3]|max_length[50]',
 				'errors' => array(
 					'required'  => 'Merci de rentrer la %s du produit',
 					'min_length' => 'La %s doit avoir au moins 3 lettres',
@@ -172,7 +172,7 @@ class Crud extends CI_Controller {
 			array(
 				'field' => 'nom',
 				'label' => 'nom',
-				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'rules' => 'required|min_length[3]|max_length[50]',
 				'errors' => array(
 					'required'  => 'Merci de rentrer le %s du produit',
 					'min_length' => 'Le %s doit avoir au moins 3 lettres',
@@ -193,7 +193,7 @@ class Crud extends CI_Controller {
 			array(
 				'field' => 'categorie',
 				'label' => 'categorie',
-				'rules' => 'required|min_length[3]|max_length[50]|alpha',
+				'rules' => 'required|min_length[3]|max_length[50]',
 				'errors' => array(
 					'required'  => 'Merci de rentrer la %s du produit',
 					'min_length' => 'La %s doit avoir au moins 3 lettres',
@@ -237,7 +237,8 @@ class Crud extends CI_Controller {
 				'upload_path' => "./uploads/",
 				'allowed_types' => "gif|jpg|png|jpeg",
 				'overwrite' => TRUE,
-				'max_size' => "2048000"
+				'max_size' => "2048000",
+				'encrypt_name' => TRUE
 				);
 
 			$this->load->library('upload', $config);
